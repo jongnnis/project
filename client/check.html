@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=4, initial-scale=1.0">
+    <title>본인인증 페이지</title>
+    <style>
+        #container {
+            width: 400px;
+            margin: 0 auto;
+            border: 0.5px solid #ddd;
+            padding: 20px;
+        }
+        h2 {width: 180px; margin: 0 auto; padding: 10px;}
+        input {width: 380px; height: 40px;}
+        .ssn {width: 180px;}
+        button {width: 190px; height: 40px; margin-top: 20px; border: none; border-radius: 3px;}
+        #check {background-color: gray; color: white; }
+        button {cursor: pointer;}
+
+    </style>
+    <script type="module" src="check.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h2>PASS 본인확인</h2>
+        <form action="./codeCheck.html" id="form">
+            <p>이름</p>
+            <input type="text" id="name" placeholder="성명입력">
+            <p>주민등록번호</p>
+            <input type="text" class="ssn" id="ssn1" placeholder="••••••"> - <input type="text" class="ssn" id="ssn2" placeholder="•••••••">
+            <p>휴대폰번호</p> 
+            <input type="text" id="phone" placeholder="숫자만 입력">
+            <button id="cancel">취소</button> <button type="submit" id="check">확인</button>
+        </form>
+    </div>
+    <script>
+        const cancel = document.getElementById('cancel')
+        cancel.addEventListener('click', closeWindow)
+        const form = document.getElementById('form')
+        form.addEventListener('submit', (e)=>{
+            const name = document.getElementById('name').value;
+            const ssn1 = document.getElementById('ssn1').value;
+            const ssn2 = document.getElementById('ssn2').value;
+            const phone = document.getElementById('phone').value;
+
+            const formData = {
+                name:name,
+                ssn1:ssn1,
+                ssn2:ssn2,
+                phone:phone
+            }
+            const jsonData = JSON.stringify(formData)
+
+            fetch("http://localhost:8080/regist/check", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: jsonData
+            })
+            .then(res=>res.json())
+            .then(data => {
+                localStorage.setItem("code",JSON.stringify(data))
+                console.log(data)
+            })
+        })
+
+        function closeWindow(){
+        window.close()
+    }
+    </script>
+</body>
+</html>
