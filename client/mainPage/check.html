@@ -23,7 +23,7 @@
 <body>
     <div id="container">
         <h2>PASS 본인확인</h2>
-        <form action="./codeCheck.html" id="form">
+        <form action="./codeCheck.html" id="form">      <!--정규 표현식, validate적용-->
             <p>이름</p>
             <input type="text" id="name" placeholder="성명입력">
             <p>주민등록번호</p>
@@ -60,7 +60,7 @@
             })
             .then(res=>res.json())
             .then(data => {
-                localStorage.setItem("code",JSON.stringify(data))
+                localStorage.setItem("code",JSON.stringify(data))       // 이 부분 나중에 수정해야함. submit으로 하면 code 저장이 안되는 오류 있음.
                 console.log(data)
             })
         })

@@ -27,10 +27,10 @@
         <form action="#">
             <p>인증번호</p>
             <div id="checknum">
-                <input type="text" id="codeCheck" placeholder="숫자 6자리 입력"><div id="timer"></div>
+                <input type="text" id="codeCheck" placeholder="숫자 6자리 입력"><div id="timer"></div>       <!--3분 지나면 local저장 사라지도록 구현-->
             </div>
-            <p>시간연장 재전송</p>
-            <button id="cancel" onclick="backPage()">취소</button> <button type="button" id="check">확인</button>
+            <p>시간연장 재전송</p>     <!--시간연장, 재전송 버튼 구현 해야함-->
+            <button id="cancel" onclick="backPage()">취소</button> <button type="button" id="check">확인</button>   <!--취소하면 이전 페이지, 확인은 코드 확인 후 회원가입창으로 다시 넘어가고 인증되었다고 표시-->
         </form>
         <div id="text">
             <p>인증번호 문자를 못받으셨나요?</p>
