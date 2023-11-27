@@ -19,7 +19,9 @@
     <div id="container">
         <h2>회원가입</h2>
     <form action="#" id="form">
-        <p>아이디: <input type="text" id="userid" placeholder="아이디를 입력하세요" maxlength="15"> <button>중복확인</button></p>  <!--아이디는 5 ~ 15글자로 입력-->
+        <input type="hidden" id="isUserid" value="n">
+        <input type="hidden" id="check" value="n">
+        <p>아이디: <input type="text" id="userid" placeholder="아이디를 입력하세요" maxlength="15"> <button onclick="useridCheck()">중복확인</button></p>  <!--아이디는 5 ~ 15글자로 입력-->
         <p>비밀번호: <input type="password" id="userpw" placeholder="비밀번호를 입력하세요" maxlength="15"></p>        <!--영어 대소문자 모두 입력하여 8 ~ 15글자 입력-->
         <p>비밀번호 확인: <input type="password" id="userpw_re" placeholder="비밀번호를 한번 더 입력하세요" maxlength="15"></p>       <!--똑같이 입력-->
         <p>이름: <input type="text" id="name" maxlength="20"></p>        <!--최대 20글자-->

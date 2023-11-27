@@ -75,6 +75,7 @@
             const codeCheck = document.getElementById('codeCheck').value
             if (codeCheck == code){
                 alert('인증되었습니다')
+                localStorage.setItem("check",'ok')
                 window.close()
             }else{
                 alert('인증번호가 틀렸거나 시간초과 되었습니다.')

@@ -1,3 +1,41 @@
+// 기본 설정
+window.onload = function(){
+    const id = document.getElementById('isUserid')
+   
+    id.addEventListener('input',() => {
+        document.getElementById('isUserid').value = 'n'
+    })
+}
+
+// 아이디 중복 확인
+function useridCheck(){
+    const userid = document.getElementById('userid')
+    const expIdText = /^[A-Za-z0-9]{5,15}$/
+    if (!expIdText.test(userid.value)){
+        alert('아이디는 5자 이상 15자 이하의 영문자 또는 숫자로 입력하세요')
+        userid.focus()
+        return false
+    }
+    const useridData = {userid: userid.value}
+    const userid_jsonData = JSON.stringify(useridData)
+    fetch('http://localhost:8080/auth/userid_check', {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: userid_jsonData
+        })
+        .then(res => res.json())
+        .then(data =>{
+            if (data.message == '이 아이디로 등록된 계정이 이미 있습니다'){
+                console.log(data)
+            }else if(data.message == '사용가능한 아이디 입니다'){
+                console.log(5)
+                document.getElementById('isUserid').value = 'y'
+            }
+        })
+}
+
 // 본인인증 팝업창 열기 (아; 근데 앱이면 필요없겠다)
 function openPopup(){
     const expNameText = /^(?:[가-힣]{1,20}|[A-Za-z]{1,20})$/
@@ -21,6 +59,12 @@ function openPopup(){
         alert('하이픈(-)을 제외한 전화번호 11자리를 올바르게 입력하세요')
         return false
     }
+    else if (document.getElementById('isUserid').value === 'n'){
+        alert('아이디 중복확인을 해주세요')
+    }
+    // else if (document.getElementById('check').value === 'n'){
+    //     alert('본인인증을 해주세요')
+    // }
     const data = {
         name : document.getElementById('name').value,
         ssn1 : document.getElementById('ssn1').value,
@@ -46,9 +90,14 @@ signUp.addEventListener('click', (e)=>{
     const ssn2 = document.getElementById('ssn2').value
     const hp = document.getElementById('hp').value
     // const proof_img = document.getElementById('proof_img').value
-    
+
     // 정규표현식 확인
     if (checkAll()) {
+        // 본인인증 했으면 hidden value 'y'로 변경
+        selfCheck()
+        // 중복아이디, 본인인증 확인
+        okCheck()
+
         // 데이터 전송
         const formData = {
             userid: userid,
@@ -58,7 +107,6 @@ signUp.addEventListener('click', (e)=>{
             ssn2: ssn2,
             hp: hp
         }
-        console.log(formData)
         const jsonData = JSON.stringify(formData)
         
         fetch('http://localhost:8080/auth/signup', {
@@ -130,5 +178,30 @@ function checkAll(){
     // else if (!)
     else{
         return true
+    }
+}
+
+// 아이디 중복확인과 본인인증 완료했는지 확인하는 함수
+function okCheck(){
+    const id = document.getElementById('isUserid').value
+    const self = document.getElementById('check').value
+
+    // 아이디 중복확인 체크
+    if (id === 'n'){
+        alert('아이디 중복 확인을 진행해주세요')
+        return false
+    }
+    // 본인인증 완료했는지 확인
+    if (self === 'n'){
+        alert('본인인증을 진행해주세요')
+        return false
+    }
+}
+
+// 본인인증 완료 함수
+function selfCheck(){
+    const selfCheck = localStorage.getItem('check')
+    if (selfCheck){
+        document.getElementById('check').value = 'y'
     }
 }

@@ -3,6 +3,7 @@ import authRouter from './router/auth.js'
 import cors from 'cors'
 import morgan from 'morgan'
 import { config } from './config.js'
+import {sequelize } from './db/database.js';
 
 const app = express()
 
@@ -16,6 +17,6 @@ app.use((req,res,next)=>{
 })
 
 
-app.listen(config.host.port, ()=>{
-    console.log('서버가 실행중입니다.')
+sequelize.sync().then(()=>{
+    const server = app.listen(config.host.port);
 })

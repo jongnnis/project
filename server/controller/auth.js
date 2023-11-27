@@ -4,6 +4,19 @@ import bcrypt from 'bcrypt'
 import {config} from '../config.js'
 // import jwt from 'jsonwebtoken'
 
+// 아이디 중복확인 함수 /auth/userid_check
+export async function useridCheck(req, res){
+    console.log(4)
+    const userid = req.body
+    console.log(userid.userid)
+    const found = await authRepository.findByUserId(userid.userid)
+    if (found){
+        return res.status(409).json({message: '이 아이디로 등록된 계정이 이미 있습니다'})
+    } else{
+        return res.status(201).json({message: '사용가능한 아이디 입니다'})
+    }
+}
+
 // 
 function randomNumber(){
     const min = 100000
@@ -28,18 +41,16 @@ export async function signup(req, res){
     if (found){
         return res.status(409).json({message: `{hp}로 이미 가입된 아이디가 있습니다`})
     }
-    const hashed = await bcrypt.hash(userpw, 10)
-    // const password_bcrypt = bcrypt.hashSync(hashed, 10)
+    const hashed = await bcrypt.hash(userpw, config.bcrypt.saltRounds)
     console.log(3)
-    const user = {
+    const users = await authRepository.createUser({
         userid,
-        password: hashed,
+        userpw: hashed,
         name,
         ssn1,
         ssn2,
         hp
-    }
-    const users = await authRepository.createUser(user)
+    })
     res.status(201).json({message:'가입되었습니다.', users})
 }
 

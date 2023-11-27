@@ -1,18 +1,43 @@
 import { config } from '../config.js'
 import express from 'express'
 import coolsms from 'coolsms-node-sdk'
+import SQ from 'sequelize'
+import { sequelize } from '../db/database.js'
 
-// DB 하기 전 연습용
-let users = [
+const DataTypes = SQ.DataTypes;
+
+export const user_info = sequelize.define(   
+    'user',
     {
-        userid:"apple",
-        userpw: '1234',
-        name: '김사과',
-        ssn1: '000608',
-        ssn2: '1234567',
-        hp: '01011112222'
-    }
-]
+        userid: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            primaryKey: true
+        },
+        userpw: {
+            type: DataTypes.STRING(128),
+            allowNull: false
+        },
+        name: {
+            type: DataTypes.STRING(50),
+            allowNull: false
+        },
+        ssn1: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        ssn2: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        hp: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+    },
+    {timestamps: false}
+)
+
 
 // 본인인증 메세지 보내기
 export async function sendMessage(code, phone){
@@ -35,15 +60,17 @@ export async function sendMessage(code, phone){
     .catch(err => console.error(err))
 }
 
-// 아이디로 회원찾기
+// 중복 아이디 확인
+export async function findByUserId(userid){
+    return user_info.findOne({where: {userid}})
+}
+
+// 핸드폰 번호로 회원찾기
 export async function findByUserHp(hp){
-    const test = users.find((user)=> user.hp === hp)
-    console.log(test)
-    return test
+    return user_info.findOne({where: {hp}})
 }
 
 // 회원 생성
 export async function createUser(user){
-    users.push(user)
-    return users
+    return user_info.create(user).then((data)=> data.dataValues.userid);
 }
