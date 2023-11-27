@@ -36,7 +36,7 @@ export async function sendMessage(code, phone){
 }
 
 // 아이디로 회원찾기
-export async function findByUserid(hp){
+export async function findByUserHp(hp){
     const test = users.find((user)=> user.hp === hp)
     console.log(test)
     return test

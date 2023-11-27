@@ -34,10 +34,18 @@
         </form>
     </div>
     <script>
+        window.onload = function(){
+            const storedData = localStorage.getItem('userInfo')
+            document.getElementById('name').value = JSON.parse(storedData).name
+            document.getElementById('ssn1').value = JSON.parse(storedData).ssn1
+            document.getElementById('ssn2').value = JSON.parse(storedData).ssn2
+            document.getElementById('phone').value = JSON.parse(storedData).hp
+        }
+
         const cancel = document.getElementById('cancel')
         cancel.addEventListener('click', closeWindow)
-        const form = document.getElementById('form')
-        form.addEventListener('submit', (e)=>{
+        const check = document.getElementById('check')
+        check.addEventListener('click', (e)=>{
             const name = document.getElementById('name').value;
             const ssn1 = document.getElementById('ssn1').value;
             const ssn2 = document.getElementById('ssn2').value;
@@ -51,7 +59,7 @@
             }
             const jsonData = JSON.stringify(formData)
 
-            fetch("http://localhost:8080/regist/check", {
+            fetch("http://localhost:8080/auth/check", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -60,8 +68,8 @@
             })
             .then(res=>res.json())
             .then(data => {
-                localStorage.setItem("code",JSON.stringify(data))       // 이 부분 나중에 수정해야함. submit으로 하면 code 저장이 안되는 오류 있음.
                 console.log(data)
+                localStorage.setItem("code",JSON.stringify(data))       // 이 부분 나중에 수정해야함. submit으로 하면 code 저장이 안되는 오류 있음.
             })
         })
 
