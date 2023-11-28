@@ -3,6 +3,9 @@ import express from 'express'
 import coolsms from 'coolsms-node-sdk'
 import SQ from 'sequelize'
 import { sequelize } from '../db/database.js'
+import multer from 'multer'
+import path from 'path'
+
 
 const DataTypes = SQ.DataTypes;
 
@@ -31,7 +34,7 @@ export const user_info = sequelize.define(
             allowNull: false
         },
         hp: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING(11),
             allowNull: false
         },
     },
@@ -74,3 +77,8 @@ export async function findByUserHp(hp){
 export async function createUser(user){
     return user_info.create(user).then((data)=> data.dataValues.userid);
 }
+
+// 파일 다운로드
+// const storage = multer.diskStorage({
+//     // destination: function()
+// })

@@ -27,10 +27,10 @@
         <p>이름: <input type="text" id="name" maxlength="20"></p>        <!--최대 20글자-->
         <p>주민 번호: <input type="text" id="ssn1" placeholder="••••••" maxlength="6"> - <input type="password" id="ssn2" placeholder="•••••••" maxlength="7"></p>        <!--서버에서 합치기-->
         <p>연락처: <input type="text" id="hp" placeholder="하이픈( - )을 제외하고 입력하세요" maxlength="11">  <button onclick="openPopup()">본인 인증</button></p> 
-        <!--01011112222 11글자 정수형, 0으로 시작하는거 데이터베이스에 넣을 때 조심-->     <!--본인인증 되면 입력창 변화-->
+        <!--01011112222 11글자 string형, '데이터베이스에 넣을 때 0으로 시작하므로'-->     <!--본인인증 되면 입력창 변화-->
         <br>
         <p>장애인 등록증</p>
-        <p><input type="file" id="proof_img" placeholder="사진 또는 파일을 첨부하세요"> <button>등록</button></p>      <!--사진 폴더에 다운받고 SQL에는 파일 경로만 저장-->
+        <p><input type="file" id="fileInput" placeholder="사진 또는 파일을 첨부하세요"> <button onclick="uploadFile()">등록</button></p>      <!--사진 폴더에 다운받고 SQL에는 파일 경로만 저장-->
     </form>
         <p><button type="button" id="home" onclick="home()">처음으로</button>  <button type="button" id="signUp">Sign Up</button></p>     <!--제대로 입력되었을 때만 다음페이지로 넘어가기, 본인인증 되었는지 확인-->
     

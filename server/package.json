@@ -9,6 +9,7 @@
     "formidable": "^3.5.1",
     "init": "^0.1.2",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.5",
     "nodemon": "^3.0.1",
     "sequelize": "^6.35.1"

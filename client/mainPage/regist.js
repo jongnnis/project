@@ -28,9 +28,9 @@ function useridCheck(){
         .then(res => res.json())
         .then(data =>{
             if (data.message == '이 아이디로 등록된 계정이 이미 있습니다'){
-                console.log(data)
+                alert('이 아이디로 등록된 계정이 이미 있습니다')
             }else if(data.message == '사용가능한 아이디 입니다'){
-                console.log(5)
+                alert('사용가능한 아이디 입니다')
                 document.getElementById('isUserid').value = 'y'
             }
         })
@@ -80,7 +80,8 @@ function home(){
 }
 // 서버에 회원 정보 보내기 (회원가입 정보 클릭!)
 const signUp = document.getElementById('signUp')
-signUp.addEventListener('click', (e)=>{
+signUp.addEventListener('click', async (e)=>{
+    e.preventDefault();
 
     // 입력 정보 추출
     const userid = document.getElementById('userid').value
@@ -89,37 +90,46 @@ signUp.addEventListener('click', (e)=>{
     const ssn1 = document.getElementById('ssn1').value
     const ssn2 = document.getElementById('ssn2').value
     const hp = document.getElementById('hp').value
-    // const proof_img = document.getElementById('proof_img').value
-
-    // 정규표현식 확인
-    if (checkAll()) {
-        // 본인인증 했으면 hidden value 'y'로 변경
+    const fileInput = document.getElementById('fileInput')
+    const file = fileInput.files[0]
+    
+    // 본인인증 했으면 hidden value 'y'로 변경
         selfCheck()
-        // 중복아이디, 본인인증 확인
-        okCheck()
+    
+        // 정규표현식 확인  // 중복아이디, 본인인증 확인
+    if (checkAll() && okCheck()) {       
 
-        // 데이터 전송
-        const formData = {
-            userid: userid,
-            userpw: userpw,
-            name: name,
-            ssn1: ssn1,
-            ssn2: ssn2,
-            hp: hp
-        }
-        const jsonData = JSON.stringify(formData)
+        // 데이터 전송  (파일때문에 json이 아닌 FormData()로 전송해야함)
+        const formData = new FormData();
+        FormData.append('userid', userid)
+        FormData.append('userpw', userpw)
+        FormData.append('name', name)
+        FormData.append('ssn1', ssn1)
+        FormData.append('ssn2', ssn2)
+        FormData.append('hp', hp)
+        FormData.append('file', file)
         
-        fetch('http://localhost:8080/auth/signup', {
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: jsonData
-        })
-        .then(res => res.json())
-        .then(data => console.log(data))
+        try{
+            const response = await fetch('http://localhost:8080/auth/signup', {
+                method:'POST',
+                body: formData
+            })
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+
+                // 회원가입이 성공했다면 다음 페이지로 이동
+                // window.location.href = '/next-page'; // 변경하고 싶은 URL로 수정
+            } else {
+                console.error('회원가입 실패');
+            }
+        } catch (error) {
+            console.error('에러 발생', error);
+        }
     }
 })
+
+
 
 // 정규 표현식 확인 함수
 function checkAll(){
@@ -139,6 +149,10 @@ function checkAll(){
     const expSsn1Text = /^\d{6}$/
     const expSsn2Text = /^\d{7}$/
     const expHpText = /^\d{11}$/
+
+    // 파일 업로드 되었는지 확인
+    const fileInput = document.getElementById('fileInput')
+    const file = fileInput.files[0]
 
     if (!expIdText.test(userid.value)){
         alert('아이디는 5자 이상 15자 이하의 영문자 또는 숫자로 입력하세요')
@@ -175,7 +189,10 @@ function checkAll(){
         hp.focus()
         return false
     }
-    // else if (!)
+    else if (!file){
+        alert('파일을 선택하세요')
+        return false
+    }
     else{
         return true
     }
@@ -192,9 +209,12 @@ function okCheck(){
         return false
     }
     // 본인인증 완료했는지 확인
-    if (self === 'n'){
+    else if (self === 'n'){
         alert('본인인증을 진행해주세요')
         return false
+    }
+    else{
+        return true
     }
 }
 
