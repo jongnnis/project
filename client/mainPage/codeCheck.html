@@ -71,7 +71,6 @@
         check.addEventListener('click', (e)=>{
             const storedData = localStorage.getItem('code')
             const code = JSON.parse(storedData).code
-            console.log(code)
             const codeCheck = document.getElementById('codeCheck').value
             if (codeCheck == code){
                 alert('인증되었습니다')

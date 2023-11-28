@@ -59,12 +59,6 @@ function openPopup(){
         alert('하이픈(-)을 제외한 전화번호 11자리를 올바르게 입력하세요')
         return false
     }
-    else if (document.getElementById('isUserid').value === 'n'){
-        alert('아이디 중복확인을 해주세요')
-    }
-    // else if (document.getElementById('check').value === 'n'){
-    //     alert('본인인증을 해주세요')
-    // }
     const data = {
         name : document.getElementById('name').value,
         ssn1 : document.getElementById('ssn1').value,
@@ -97,22 +91,36 @@ signUp.addEventListener('click', async (e)=>{
         selfCheck()
     
         // 정규표현식 확인  // 중복아이디, 본인인증 확인
-    if (checkAll() && okCheck()) {       
+    if (checkAll() && okUserid()&& okSelf()) {       
 
         // 데이터 전송  (파일때문에 json이 아닌 FormData()로 전송해야함)
-        const formData = new FormData();
-        FormData.append('userid', userid)
-        FormData.append('userpw', userpw)
-        FormData.append('name', name)
-        FormData.append('ssn1', ssn1)
-        FormData.append('ssn2', ssn2)
-        FormData.append('hp', hp)
-        FormData.append('file', file)
+        // const formData = new FormData();
+        // FormData.append('userid', userid)
+        // FormData.append('userpw', userpw)
+        // FormData.append('name', name)
+        // FormData.append('ssn1', ssn1)
+        // FormData.append('ssn2', ssn2)
+        // FormData.append('hp', hp)
+        // FormData.append('file', file)
+
+        // 데이터 전송
+        const formData = {
+            userid: userid,
+            userpw: userpw,
+            name: name,
+            ssn1: ssn1,
+            ssn2: ssn2,
+            hp: hp
+        }
+        const jsonData = JSON.stringify(formData)
         
         try{
             const response = await fetch('http://localhost:8080/auth/signup', {
                 method:'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
             })
             if (response.ok) {
                 const data = await response.json();
@@ -198,30 +206,37 @@ function checkAll(){
     }
 }
 
-// 아이디 중복확인과 본인인증 완료했는지 확인하는 함수
-function okCheck(){
-    const id = document.getElementById('isUserid').value
-    const self = document.getElementById('check').value
-
-    // 아이디 중복확인 체크
-    if (id === 'n'){
-        alert('아이디 중복 확인을 진행해주세요')
-        return false
-    }
-    // 본인인증 완료했는지 확인
-    else if (self === 'n'){
-        alert('본인인증을 진행해주세요')
-        return false
-    }
-    else{
-        return true
-    }
-}
-
 // 본인인증 완료 함수
 function selfCheck(){
     const selfCheck = localStorage.getItem('check')
     if (selfCheck){
         document.getElementById('check').value = 'y'
+    }
+}
+
+// 아이디 중복확인 완료했는지 확인하는 함수
+function okUserid(){
+    const id = document.getElementById('isUserid').value
+
+    // 아이디 중복확인 체크
+    if (id === 'n'){
+        alert('아이디 중복 확인을 진행해주세요')
+        return false
+    }else{
+        return true
+    }
+}
+
+// 본인인증 완료했는지 확인하는 함수
+function okSelf(){
+    const self = document.getElementById('check').value
+
+    // 본인인증 완료했는지 확인
+    if (self === 'n'){
+        alert('본인인증을 진행해주세요')
+        return false
+    }
+    else{
+        return true
     }
 }

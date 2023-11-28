@@ -29,24 +29,24 @@ export async function check(req, res, next){
     console.log(2)
     const code = randomNumber()
     console.log(code)
-    const {name, ssn1, ssn2, phone} = req.body
+    const {name, ssn1, ssn2, phone, none} = req.body
     const check = await authRepository.sendMessage(code, phone)
     res.status(200).json({code})
 }
 
 // 파일이 저장될 폴더 지정
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../uploads')); // 파일이 저장될 폴더 지정
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const fileExtension = path.extname(file.originalname);
-        cb(null, file.fieldname + '-' + uniqueSuffix + fileExtension);
-    },
-});
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, path.join(__dirname, '../uploads')); // 파일이 저장될 폴더 지정
+//     },
+//     filename: function (req, file, cb) {
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//         const fileExtension = path.extname(file.originalname);
+//         cb(null, file.fieldname + '-' + uniqueSuffix + fileExtension);
+//     },
+// });
 
-const upload = multer({ storage: storage }); 
+// const upload = multer({ storage: storage }); 
 
 // 회원가입 /auth/signup
 export async function signup(req, res){
