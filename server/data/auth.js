@@ -1,46 +1,12 @@
-import { config } from '../config.js'
+import MongoDb from 'mongodb'
 import express from 'express'
+import { config } from '../config.js'
 import coolsms from 'coolsms-node-sdk'
-import SQ from 'sequelize'
-import { sequelize } from '../db/database.js'
-import multer from 'multer'
-import path from 'path'
+import { getUsers } from '../db/database.js'
+// import multer from 'multer'      // 파일업로드 할때 사용
+// import path from 'path'
 
-
-const DataTypes = SQ.DataTypes;
-
-export const user_info = sequelize.define(   
-    'user',
-    {
-        userid: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            primaryKey: true
-        },
-        userpw: {
-            type: DataTypes.STRING(128),
-            allowNull: false
-        },
-        name: {
-            type: DataTypes.STRING(50),
-            allowNull: false
-        },
-        ssn1: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        ssn2: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        hp: {
-            type: DataTypes.STRING(11),
-            allowNull: false
-        },
-    },
-    {timestamps: false}
-)
-
+const ObjectID = MongoDb.ObjectId
 
 // 본인인증 메세지 보내기
 export async function sendMessage(code, phone){
@@ -65,18 +31,25 @@ export async function sendMessage(code, phone){
 
 // 중복 아이디 확인
 export async function findByUserId(userid){
-    return user_info.findOne({where: {userid}})
+    return getUsers().find({userid}).next().then(mapOptionalUser)
 }
 
 // 핸드폰 번호로 회원찾기
 export async function findByUserHp(hp){
-    return user_info.findOne({where: {hp}})
+    return getUsers().find({hp}).next().then(mapOptionalUser)
 }
 
 // 회원 생성
 export async function createUser(user){
-    return user_info.create(user).then((data)=> data.dataValues.userid);
+    return getUsers().insertOne(user)
+    // .then((result)=> result.insertedId.toString())
 }
+
+// MongoDb에 저장되어있는 찾은 유저의 정보 _id값도 가져오기
+function mapOptionalUser(user){
+    return user ? { ...user, id: user._id.toString()} : user;
+}
+
 
 // 파일 다운로드
 // const storage = multer.diskStorage({

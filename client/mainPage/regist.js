@@ -1,11 +1,12 @@
 // 기본 설정
 window.onload = function(){
-    const id = document.getElementById('isUserid')
-   
-    id.addEventListener('input',() => {
-        document.getElementById('isUserid').value = 'n'
-    })
+    localStorage.setItem("check",'')
 }
+
+const userid = document.getElementById('userid')
+userid.addEventListener('input',() => {
+    document.getElementById('isUserid').value = 'n'
+})
 
 // 아이디 중복 확인
 function useridCheck(){
@@ -124,12 +125,16 @@ signUp.addEventListener('click', async (e)=>{
             })
             if (response.ok) {
                 const data = await response.json();
+                alert('회원가입 되었습니다.')
                 console.log(data);
 
                 // 회원가입이 성공했다면 다음 페이지로 이동
                 // window.location.href = '/next-page'; // 변경하고 싶은 URL로 수정
             } else {
+                const data = await response.json()
+                console.log(data)
                 console.error('회원가입 실패');
+                alert('회원가입에 실패하였습니다.')
             }
         } catch (error) {
             console.error('에러 발생', error);
@@ -209,21 +214,8 @@ function checkAll(){
 // 본인인증 완료 함수
 function selfCheck(){
     const selfCheck = localStorage.getItem('check')
-    if (selfCheck){
+    if (selfCheck == 'ok'){
         document.getElementById('check').value = 'y'
-    }
-}
-
-// 아이디 중복확인 완료했는지 확인하는 함수
-function okUserid(){
-    const id = document.getElementById('isUserid').value
-
-    // 아이디 중복확인 체크
-    if (id === 'n'){
-        alert('아이디 중복 확인을 진행해주세요')
-        return false
-    }else{
-        return true
     }
 }
 
@@ -237,6 +229,19 @@ function okSelf(){
         return false
     }
     else{
+        return true
+    }
+}
+
+// 아이디 중복확인 완료했는지 확인하는 함수
+function okUserid(){
+    const id = document.getElementById('isUserid').value
+
+    // 아이디 중복확인 체크
+    if (id === 'n'){
+        alert('아이디 중복 확인을 진행해주세요')
+        return false
+    }else{
         return true
     }
 }
