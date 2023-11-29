@@ -54,6 +54,13 @@ export async function signup(req, res){
     res.status(201).json({message:'가입되었습니다.', users})
 }
 
+// test
+export async function testFile(req, res){
+    const file = req.body
+    console.log(file)
+
+    res.status(201).json({message:'파일 저장 성공.'})
+}
 
 // 나중에 토큰할거
 // function createJwtToken(userid){

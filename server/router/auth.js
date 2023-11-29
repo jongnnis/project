@@ -35,4 +35,7 @@ router.post('/check', authController.check)
 // 회원가입
 router.post('/signup', authController.signup)
 
+// 파일받기 test
+router.post('/test', authController.testFile)
+
 export default router
