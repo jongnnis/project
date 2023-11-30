@@ -74,31 +74,6 @@ function home(){
     window.location.href =  './index.html'
 }
 
-// 파일보내기 테스트
-// const fileBtn = document.getElementById('fileBtn')
-// fileBtn.addEventListener('click', async ()=>{
-//     const userid = document.getElementById('userid').value
-//     const fileInput = document.getElementById('fileInput').files[0]
-//     const formData = new FormData()
-//     formData.append('file', fileInput)
-//     formData.append('userid', userid)
-
-//     try{
-//         const response = await fetch('http://localhost:8080/auth/test', {
-//             method:'POST',
-//             body: formData
-//         })
-//         if (response.ok) {
-//             const data = await response.json();
-//             console.log(data);
-//         } else{
-//             console.error('파일전송 실패')
-//         }
-//     }catch(error) {
-//         console.error('에러 발생', error);
-//     }
-// })
-
 // 서버에 회원 정보 보내기 (회원가입 정보 클릭!)
 const signUp = document.getElementById('signUp')
 signUp.addEventListener('click', async (e)=>{
@@ -129,17 +104,6 @@ signUp.addEventListener('click', async (e)=>{
         formData.append('ssn2', ssn2)
         formData.append('hp', hp)
         formData.append('file', file)
-
-        // 데이터 전송
-        // const formData = {
-        //     userid: userid,
-        //     userpw: userpw,
-        //     name: name,
-        //     ssn1: ssn1,
-        //     ssn2: ssn2,
-        //     hp: hp
-        // }
-        // const jsonData = JSON.stringify(formData)
         
         try{
             const response = await fetch('http://localhost:8080/auth/signup', {

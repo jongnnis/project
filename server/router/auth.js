@@ -15,7 +15,7 @@ const validateCredential = [
         .withMessage('userid는 반드시 입력해야 함'),
     body('userpw')
         .trim()
-        .isLength({min:4})
+        .isLength({min:3})
         .withMessage('userpw는 반드시 4자 이상이여야 함'),
     validate
 ]
@@ -30,21 +30,6 @@ const validateSignup = [
     validate
 ]
 
-// multer 설정
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads/');
-//     },
-//     filename: function (req, file, cb) {
-//         // 파일명을 userid로 설정
-//         console.log(req.body)
-//         const userid = req.body.userid || 'unknown_user';
-//         cb(null, userid + path.extname(file.originalname));
-//     },
-// });
-
-// const upload = multer({ storage: storage });
-
 // 아이디 중복 확인
 router.post('/userid_check', authController.useridCheck)
 // 본인인증
@@ -52,7 +37,5 @@ router.post('/check', authController.check)
 // 회원가입
 router.post('/signup', authController.upload.single('file'), authController.signup)
 
-// 파일받기 test
-router.post('/test', authController.upload.single('file'), authController.testFile)
 
 export default router

@@ -27,7 +27,7 @@ export async function sendMessage(code, phone){
     .catch(err => console.error(err))
 }
 
-// 중복 아이디 확인
+// 아이디 중복 확인
 export async function findByUserId(userid){
     return getUsers().find({userid}).next().then(mapOptionalUser)
 }
