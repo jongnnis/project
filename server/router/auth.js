@@ -2,6 +2,8 @@ import express from 'express'
 import {body} from 'express-validator'
 import {validate} from '../middleware/validator.js'
 import * as authController from '../controller/auth.js'
+import multer from 'multer'      // 파일업로드 할때 사용
+import path from 'path'
 
 const router = express.Router()
 
@@ -28,14 +30,29 @@ const validateSignup = [
     validate
 ]
 
+// multer 설정
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads/');
+//     },
+//     filename: function (req, file, cb) {
+//         // 파일명을 userid로 설정
+//         console.log(req.body)
+//         const userid = req.body.userid || 'unknown_user';
+//         cb(null, userid + path.extname(file.originalname));
+//     },
+// });
+
+// const upload = multer({ storage: storage });
+
 // 아이디 중복 확인
 router.post('/userid_check', authController.useridCheck)
 // 본인인증
 router.post('/check', authController.check)
 // 회원가입
-router.post('/signup', authController.signup)
+router.post('/signup', authController.upload.single('file'), authController.signup)
 
 // 파일받기 test
-router.post('/test', authController.testFile)
+router.post('/test', authController.upload.single('file'), authController.testFile)
 
 export default router

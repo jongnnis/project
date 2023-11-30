@@ -3,8 +3,6 @@ import express from 'express'
 import { config } from '../config.js'
 import coolsms from 'coolsms-node-sdk'
 import { getUsers } from '../db/database.js'
-// import multer from 'multer'      // 파일업로드 할때 사용
-// import path from 'path'
 
 const ObjectID = MongoDb.ObjectId
 
@@ -50,8 +48,3 @@ function mapOptionalUser(user){
     return user ? { ...user, id: user._id.toString()} : user;
 }
 
-
-// 파일 다운로드
-// const storage = multer.diskStorage({
-//     // destination: function()
-// })

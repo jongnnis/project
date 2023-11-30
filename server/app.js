@@ -7,6 +7,7 @@ import { connectDB } from './db/database.js';
 
 const app = express()
 
+app.use('/uploads', express.static('uploads'))
 app.use(morgan("dev"))
 app.use(cors())
 app.use(express.json())
