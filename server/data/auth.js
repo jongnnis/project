@@ -28,7 +28,7 @@ export async function sendMessage(code, phone){
 }
 
 // 아이디 중복 확인
-export async function findByUserId(userid){
+export async function findByUserid(userid){
     return getUsers().find({userid}).next().then(mapOptionalUser)
 }
 
@@ -41,6 +41,25 @@ export async function findByUserHp(hp){
 export async function createUser(user){
     return getUsers().insertOne(user)
     // .then((result)=> result.insertedId.toString())
+}
+
+// _id로 회원정보 불러오기
+export async function getById(id){
+    return getUsers()
+        .find({_id: new ObjectID(id)})
+        .next()
+        .then(mapOptionalUser)
+}
+
+// 새로운 비밀번호 설정
+export async function updatePW(id, new_hashed){
+    return getUsers().findOneAndUpdate(
+        {_id: new ObjectID(id)},
+        {$set: {userpw: new_hashed}},
+        {returnDocument: "after"}
+    )
+    .then((result)=>result)
+    .then(mapOptionalUser)
 }
 
 // MongoDb에 저장되어있는 찾은 유저의 정보 _id값도 가져오기

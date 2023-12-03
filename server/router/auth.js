@@ -36,6 +36,13 @@ router.post('/userid_check', authController.useridCheck)
 router.post('/check', authController.check)
 // 회원가입
 router.post('/signup', authController.upload.single('file'), authController.signup)
-
+// 로그인
+router.post('/login', authController.login)
+// id 찾기
+router.post('/findID', authController.findID)
+// pw 찾기
+router.post('/findPW', authController.findPW)
+// 새로운 pw 등록
+router.put('/newPW/:id', authController.newPW)
 
 export default router
