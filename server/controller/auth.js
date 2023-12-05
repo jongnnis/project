@@ -48,6 +48,7 @@ export async function check(req, res, next){
 // 회원가입 /auth/signup
 export async function signup(req, res){
     const {userid, userpw, name, ssn1, ssn2, hp} = req.body
+    console.log(userid)
     const found = await authRepository.findByUserHp(hp)
     if (found){
         return res.status(409).json({message: `${hp}로 이미 가입된 아이디가 있습니다`})
@@ -147,4 +148,39 @@ export async function newPW(req, res, next){
     }
     const update = await authRepository.updatePW(id, new_hashed)
     res.status(200).json(update)
+}
+
+// 비밀번호 확인    /auth/checkPw
+export async function checkPw(req, res){
+    const userpw = req.body.userpw
+    // 토큰에 저장된 유저정보에서 _id 가져와서 유저찾기
+    const user = await authRepository.getById(req.userId)
+    // 비밀번호가 맞는지 확인
+    const isValidpassword = bcrypt.compareSync(userpw, user.userpw)
+    if(!isValidpassword){
+        res.status(403).json({message: '비밀번호 틀림'})
+    }
+    res.status(200).json({message: 'ok'})
+}
+
+// 유저정보 보내기 /auth/userInfo
+export async function userInfo(req, res){
+    // 토큰에 저장된 유저정보에서 _id 가져와서 유저찾기
+    const user = await authRepository.getById(req.userId)
+    // 유저정보 전송
+    res.status(201).json({userid:user.userid, name:user.name , hp:user.hp})
+}
+
+// 유저 정보 수정   /auth/userModify
+export async function update(req,res){
+    const {name, hp} = req.body;
+    const user = await authRepository.getById(req.userId)
+    if (user.hp !== hp){
+        const found = await authRepository.findByUserHp(hp)
+        if (found){
+            return res.status(409).json({message: `이미 ${hp}로 가입된 아이디가 있음`})
+        }
+    }
+    const update = await authRepository.updateUserInfo(req.userId, name, hp)
+    res.status(200).json({message: '회원정보가 수정되었습니다', update})
 }

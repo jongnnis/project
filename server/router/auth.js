@@ -1,9 +1,10 @@
 import express from 'express'
-import {body} from 'express-validator'
+import {body, validationResult} from 'express-validator'
 import {validate} from '../middleware/validator.js'
 import * as authController from '../controller/auth.js'
 import multer from 'multer'      // 파일업로드 할때 사용
 import path from 'path'
+import {isAuth} from '../middleware/auth.js';
 
 const router = express.Router()
 
@@ -22,11 +23,29 @@ const validateCredential = [
 
 // 회원가입 validate
 const validateSignup = [
-    ...validateCredential,
-    body('name').notEmpty().withMessage('name은 반드시 입력'),
-    body('ssn1').notEmpty().withMessage('ssn1는 반드시 입력'),
-    body('ssn2').notEmpty().withMessage('ssn1는 반드시 입력'),
-    body('hp').notEmpty().withMessage('hp는 반드시 입력'),
+    body('userid')
+        .trim()
+        .notEmpty().withMessage('userid는 반드시 입력해야 함'),
+        // .isLength({ min: 5, max: 15 }).withMessage('userid는 5~15자 이어야 함')
+        // .matches(/^[A-Za-z0-9]{5,15}$/).withMessage('userid는 영문 대소문자와 숫자로 5~15자 이어야 함'),
+    // body('userpw')
+    //     .trim()
+    //     .notEmpty().withMessage('userpw는 반드시 입력해야 함')
+    //     .isLength({ min: 8, max: 15 }).withMessage('userpw는 8~15자 이어야 함')
+    //     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*+=-])[A-Za-z\d~!@#$%^&*+=-]+$/)
+    //     .withMessage('userpw는 적어도 하나의 알파벳, 하나의 숫자, 하나의 특수문자(~!@#$%^&*+=-)가 포함된 8-15자리의 공백이 없는 문자열이어야 함'),
+    // body('name')
+    //     .notEmpty().withMessage('name은 반드시 입력')
+    //     .matches(/^(?:[A-Za-z]+|[가-힣]+)$/).withMessage('name은 영문 알파벳 또는 한글문자로 1-20자 이어야 함'),
+    // body('ssn1')
+    //     .notEmpty().withMessage('ssn1은 반드시 입력')
+    //     .isLength({ min: 6, max: 6 }).withMessage('ssn1은 6자리여야 함'),
+    // body('ssn2')
+    //     .notEmpty().withMessage('ssn2은 반드시 입력')
+    //     .isLength({ min: 7, max: 7 }).withMessage('ssn1은 7자리여야 함'),
+    // body('hp')
+    //     .notEmpty().withMessage('hp는 반드시 입력')
+    //     .isLength({ min: 11, max: 11 }).withMessage('hp는 11자리여야 함'),
     validate
 ]
 
@@ -44,5 +63,15 @@ router.post('/findID', authController.findID)
 router.post('/findPW', authController.findPW)
 // 새로운 pw 등록
 router.put('/newPW/:id', authController.newPW)
+
+// -----------------------------------------------------------
+// 회원정보 수정
+
+// 회원정보 수정 비밀번호 확인
+router.post('/checkPW', isAuth, authController.checkPw)
+// 회원정보 보내기
+router.get('/userInfo', isAuth, authController.userInfo)
+// 회원정보 수정
+router.put('/update', isAuth, authController.update)
 
 export default router

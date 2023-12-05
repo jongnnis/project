@@ -62,6 +62,16 @@ export async function updatePW(id, new_hashed){
     .then(mapOptionalUser)
 }
 
+// updateUserInfo()  회원정보수정
+export async function updateUserInfo(id, name, hp){
+    return getUsers().findOneAndUpdate(
+        {_id: new ObjectID(id)},
+        {$set: {name: name, hp: hp}},
+        {returnDocument: "after"}
+    )
+}
+
+
 // MongoDb에 저장되어있는 찾은 유저의 정보 _id값도 가져오기
 function mapOptionalUser(user){
     return user ? { ...user, id: user._id.toString()} : user;

@@ -143,8 +143,8 @@ function checkAll(){
 
     // 정규 표현식
     const expIdText = /^[A-Za-z0-9]{5,15}$/
-    const expPwText = /^(?=.*[A-Za-z])(?=.*[~!@#$%^*+=-])(?=.*[0-9])\S{5,20}$/
-    const expPw_reText = /^(?=.*[A-Za-z])(?=.*[~!@#$%^*+=-])(?=.*[0-9])\S{5,20}$/
+    const expPwText = /^(?=.*[A-Za-z])(?=.*[~!@#$%^*+=-])(?=.*[0-9])\S{8,15}$/
+    const expPw_reText = /^(?=.*[A-Za-z])(?=.*[~!@#$%^*+=-])(?=.*[0-9])\S{8,15}$/
     const expNameText = /^(?:[가-힣]{1,20}|[A-Za-z]{1,20})$/
     const expSsn1Text = /^\d{6}$/
     const expSsn2Text = /^\d{7}$/
