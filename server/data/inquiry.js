@@ -7,7 +7,10 @@ import { Result } from 'express-validator'
 
 const ObjectID = MongoDb.ObjectId
 
+<<<<<<< HEAD
 // 문의 글 생성
+=======
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
 export async function create(category, title, text, userId){
     return authRepository.getById(userId)
     .then((user)=>
@@ -33,10 +36,14 @@ export async function getById(id) {
 
 // userid로 문의 데이터 찾기
 export async function getAllByUserid(userid){
+<<<<<<< HEAD
     return getInquiries()
         .find({userid})
         .toArray()
         .then(mapInquiries)
+=======
+    return getInquiries().find({userid}).next().then(mapOptionalInquiry)
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
 }
 
 // update()  문의 글 수정    수정 못하게 하기로함....
@@ -48,6 +55,7 @@ export async function getAllByUserid(userid){
 //     )
 // }
 
+<<<<<<< HEAD
 // delete()   문의 글 삭제 
 export async function remove(id) {
     return getInquiries().deleteOne({_id: new ObjectID(id)})
@@ -60,4 +68,9 @@ function mapOptionalInquiry(inquiry){
 
 function mapInquiries(inquiries){
     return inquiries.map(mapOptionalInquiry)
+=======
+// _id 값 가져오는 함수
+function mapOptionalInquiry(inquiry){
+    return inquiry? {...inquiry, id: inquiry._id.toString()} : inquiry;
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
 }

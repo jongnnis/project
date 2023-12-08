@@ -38,7 +38,12 @@ export async function check(req, res, next){
     console.log(2)
     const code = randomNumber()
     console.log(code)
+<<<<<<< HEAD
     const {hp} = req.body
+=======
+    const {name, hp} = req.body
+    console.log(hp)
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
     const check = await authRepository.sendMessage(code, hp)
     res.status(200).json({code})
 }
@@ -93,11 +98,11 @@ export async function login(req, res){
     const user = await authRepository.findByUserid(userid)
     console.log(req.body)
     if(!user){
-        return res.status(401).json({message:'사용자를 찾을 수 없음'})
+        return res.status(401).json({message:'아이디 비밀번호가 틀렸습니다'})
     }
     const isValidpassword = bcrypt.compareSync(userpw, user.userpw)
     if (!isValidpassword){
-        return res.status(401).json({message: '비밀번호가 틀렸음'})
+        return res.status(401).json({message: '아이디 비밀번호가 틀렸습니다'})
     }
     const token = createJwtToken(user.id)
     res.status(200).json({token, message: '로그인 되었습니다'})

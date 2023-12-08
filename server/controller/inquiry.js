@@ -3,22 +3,33 @@ import * as authRepository from '../data/auth.js'
 
 // 문의하기 글 생성   /inquiry/write
 export async function createInquiry(req, res, next){
+<<<<<<< HEAD
     // body에서 받아온 정보
     const {category, title, text} = req.body;
     // 문의하기 생성   inquiry: 생성된 문의 글
+=======
+    const {category, title, text} = req.body;
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
     const inquiry = await inquiryRepository.create(category, title, text, req.userId)
     res.status(201).json(inquiry)
 }
 
+<<<<<<< HEAD
 // 나의 문의하기 내역    /inquiry/myInquiries
 export async function getAllInquiry(req, res){
     // 사용자 정보
     const user = await authRepository.getById(req.userId)
     // 나의 문의글 전부
+=======
+// 나의 문의하기 내역    /inquiry/
+export async function getInquiry(req, res){
+    const user = await authRepository.getById(req.userId)
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
     const inquiry = await inquiryRepository.getAllByUserid(user.userid)
     res.status(200).json(inquiry)
 }
 
+<<<<<<< HEAD
 // 선택한 나의 문의글 하나만 가져오기   /inquiry/myInquiry/:id
 export async function getInquiry(req, res){
     // 사용자 정보
@@ -54,6 +65,8 @@ export async function deleteInquiry(req, res){
 
 
 
+=======
+>>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
 // 문의하기 글 수정   /inquiry/update       수정 못하게 하기로함....
 // export async function updateInqury(req, res){
 //     // 문의하기 _id
