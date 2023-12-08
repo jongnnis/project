@@ -137,7 +137,7 @@ export async function findPW(req, res, next){
     
 }
 
-// 새로운 pw 등록   /auth/newPW
+// 새로운 pw 등록   /auth/newPW     (아이디 찾기 시 이용)
 export async function newPW(req, res, next){
     const {userid, new_pw} = req.body
     const new_hashed = await bcrypt.hash(new_pw, config.bcrypt.saltRounds)
@@ -149,7 +149,20 @@ export async function newPW(req, res, next){
     res.status(200).json({update, message: '새로운 비밀번호가 등록되었습니다'})
 }
 
-// 비밀번호 확인    /auth/checkPw
+// 새로운 pw 등록   /auth/newPW_id       (회원정보 수정시 이용)
+export async function newPW_id(req, res, next){
+    const new_pw = req.body.new_pw
+    console.log(new_pw)
+    const new_hashed = await bcrypt.hash(new_pw, config.bcrypt.saltRounds)
+    const user = await authRepository.getById(req.userId)
+    if(!user){
+        res.status(404).json({message: `에러: 유저를 찾을 수 없습니다`})
+    }
+    const update = await authRepository.updatePW(user.id, new_hashed)
+    res.status(200).json({update, message: '새로운 비밀번호가 등록되었습니다'})
+}
+
+// 비밀번호 확인    /auth/checkPw       
 export async function checkPw(req, res){
     const userpw = req.body.userpw
     // 토큰에 저장된 유저정보에서 _id 가져와서 유저찾기
@@ -157,7 +170,7 @@ export async function checkPw(req, res){
     // 비밀번호가 맞는지 확인
     const isValidpassword = bcrypt.compareSync(userpw, user.userpw)
     if(!isValidpassword){
-        res.status(403).json({message: '비밀번호 틀림'})
+        return res.status(403).json({message: '비밀번호 틀림'})
     }
     res.status(200).json({message: 'ok'})
 }
@@ -170,8 +183,8 @@ export async function userInfo(req, res){
     res.status(201).json({userid:user.userid, name:user.name , hp:user.hp})
 }
 
-// 유저 정보 수정   /auth/userModify
-export async function update(req,res){
+// 유저 정보 수정   /auth/modify
+export async function modify(req,res){
     const {name, hp} = req.body;
     const user = await authRepository.getById(req.userId)
     if (user.hp !== hp){

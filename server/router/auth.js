@@ -72,7 +72,9 @@ router.post('/checkPW', isAuth, authController.checkPw)
 // 회원정보 보내기
 router.get('/userInfo', isAuth, authController.userInfo)
 // 회원정보 수정
-router.put('/update', isAuth, authController.update)
+router.put('/modify', isAuth, authController.modify)
+// 비밀번호 변경
+router.put('/newPW_id', isAuth, authController.newPW_id)
 
 
 export default router
