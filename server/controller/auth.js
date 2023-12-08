@@ -38,12 +38,7 @@ export async function check(req, res, next){
     console.log(2)
     const code = randomNumber()
     console.log(code)
-<<<<<<< HEAD
     const {hp} = req.body
-=======
-    const {name, hp} = req.body
-    console.log(hp)
->>>>>>> 6bb32c01e141305891410c07fd5ad5e2865779de
     const check = await authRepository.sendMessage(code, hp)
     res.status(200).json({code})
 }
