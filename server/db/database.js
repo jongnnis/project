@@ -11,3 +11,7 @@ export async function connectDB(){
 export function getUsers(){
     return db.collection('users')
 }
+
+export function getInquiries(){
+    return db.collection('inquiries')
+}

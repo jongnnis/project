@@ -74,4 +74,5 @@ router.get('/userInfo', isAuth, authController.userInfo)
 // 회원정보 수정
 router.put('/update', isAuth, authController.update)
 
+
 export default router
