@@ -38,8 +38,8 @@ export async function check(req, res, next){
     console.log(2)
     const code = randomNumber()
     console.log(code)
-    const {name, ssn1, ssn2, phone, none} = req.body
-    const check = await authRepository.sendMessage(code, phone)
+    const {hp} = req.body
+    const check = await authRepository.sendMessage(code, hp)
     res.status(200).json({code})
 }
 
@@ -52,6 +52,10 @@ export async function signup(req, res){
     const found = await authRepository.findByUserHp(hp)
     if (found){
         return res.status(409).json({message: `${hp}로 이미 가입된 아이디가 있습니다`})
+    }
+    const foundID = await authRepository.findByUserid(userid)
+    if (foundID){
+        return res.status(408).json({message: `${userid}로 이미 가입된 아이디가 있습니다`})
     }
     const hashed = await bcrypt.hash(userpw, config.bcrypt.saltRounds)
     const users = await authRepository.createUser({
@@ -87,7 +91,7 @@ export const upload = multer({ storage: storage });
 export async function login(req, res){
     const {userid, userpw} = req.body
     const user = await authRepository.findByUserid(userid)
-    console.log(user)
+    console.log(req.body)
     if(!user){
         return res.status(401).json({message:'사용자를 찾을 수 없음'})
     }
@@ -96,23 +100,20 @@ export async function login(req, res){
         return res.status(401).json({message: '비밀번호가 틀렸음'})
     }
     const token = createJwtToken(user.id)
-    res.status(200).json({token, message: '로그인 되었습니다.'})
+    res.status(200).json({token, message: '로그인 되었습니다'})
 }
 
 // ID 찾기   /auth/findID
 export async function findID(req, res, next){
-    const code = randomNumber()
-    console.log(code)
     const {name, hp} = req.body
     const found = await authRepository.findByUserHp(hp)
     if (!found){
-        return res.status(409).json({message: `${hp}로 가입된 아이디가 없음`})
+        return res.status(409).json({message: '해당 전화번호로 가입된 아이디가 없음'})
     }else{
         if (found.name !== name){
             return res.status(408).json({message: '이름과 hp가 일치하지 않음'})
         }else{
-            const send = await authRepository.sendMessage(code, hp)
-            res.status(200).json({code, userid:found.userid})
+            res.status(200).json({userid:found.userid})
         }
     }
     
@@ -120,34 +121,32 @@ export async function findID(req, res, next){
 
 // PW 찾기   /auth/findPW
 export async function findPW(req, res, next){
-    const code = randomNumber()
-    console.log(code)
     const {userid, hp} = req.body
     const found = await authRepository.findByUserHp(hp)
     if (!found){
         return res.status(409).json({message: `${hp}로 가입된 아이디가 없음`})
     }else{
+        console.log(found)
+        console.log(userid)
         if (found.userid !== userid){
             return res.status(408).json({message: '아이디와 hp가 일치하지 않음'})
         }else{
-            // const send = await authRepository.sendMessage(code, hp)
-            res.status(200).json({code})
+            res.status(200).json({message: 'ok'})
         }
     }
     
 }
 
-// 새로운 pw 등록   /auth/newPW/:id
+// 새로운 pw 등록   /auth/newPW
 export async function newPW(req, res, next){
-    const id = req.params.id
-    const new_pw = req.body.new_pw
+    const {userid, new_pw} = req.body
     const new_hashed = await bcrypt.hash(new_pw, config.bcrypt.saltRounds)
-    const user = await authRepository.getById(id)
+    const user = await authRepository.findByUserid(userid)
     if(!user){
-        res.status(404).json({message: `user id(${id}) not found`})
+        res.status(404).json({message: `에러: 유저를 찾을 수 없습니다`})
     }
-    const update = await authRepository.updatePW(id, new_hashed)
-    res.status(200).json(update)
+    const update = await authRepository.updatePW(user.id, new_hashed)
+    res.status(200).json({update, message: '새로운 비밀번호가 등록되었습니다'})
 }
 
 // 비밀번호 확인    /auth/checkPw

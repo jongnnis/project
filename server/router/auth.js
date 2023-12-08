@@ -62,7 +62,7 @@ router.post('/findID', authController.findID)
 // pw 찾기
 router.post('/findPW', authController.findPW)
 // 새로운 pw 등록
-router.put('/newPW/:id', authController.newPW)
+router.put('/newPW', authController.newPW)
 
 // -----------------------------------------------------------
 // 회원정보 수정
@@ -73,5 +73,6 @@ router.post('/checkPW', isAuth, authController.checkPw)
 router.get('/userInfo', isAuth, authController.userInfo)
 // 회원정보 수정
 router.put('/update', isAuth, authController.update)
+
 
 export default router

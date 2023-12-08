@@ -7,7 +7,7 @@ import { getUsers } from '../db/database.js'
 const ObjectID = MongoDb.ObjectId
 
 // 본인인증 메세지 보내기
-export async function sendMessage(code, phone){
+export async function sendMessage(code, hp){
     const mysms = coolsms.default;
 
     const apiKey = config.sms.apiKey        // api 인증키
@@ -19,7 +19,7 @@ export async function sendMessage(code, phone){
 
     const params = {
         "text": `[이동의 꿈] 본인확인 인증번호[${code}]입니다. "타인 노출 금지"`,   // 문자 내용
-        "to": phone,        // 수신번호 (받는이)
+        "to": hp,        // 수신번호 (받는이)
         "from": fromNum     // 발신번호 (보내는이)
     }
     messageService.sendOne(params)
