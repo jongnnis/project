@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원정보 수정</title>
     <link rel="stylesheet" href="../userFrame.css">
-    <link rel="stylesheet" href="./checkPW.css">
-    <link rel="stylesheet" type="text/css" href="../a_XEIcon-2.2.0/xeicon.min.css">
+    <!-- <link rel="stylesheet" href="./checkPW.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 </head>
 <body>
     <header>
@@ -31,17 +31,19 @@
     </div>
         </form>
     <script>
-      const userInfo = localStorage.getItem('userinfo')
-      // 연결해서 한번 해보기
-      if(userInfo){
-          const userData = JSON.parse(userInfo)
-          console.log(userData)
-          token = userData.token;
-      }else{
-          // alert('로그인 후 사용 바랍니다')
+      const userInfo = localStorage.getItem('userInfo')
+      const token = JSON.parse(userInfo).value
+      if(!token){
+          alert('로그인 후 사용바랍니다')
+          window.location.href = '../login.html'
       }
-      token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NmViOTBkYjE4OWQyOTBjNzAyYWNhNSIsImlhdCI6MTcwMjAxNDk2MywiZXhwIjoxNzAyMTg3NzYzfQ.qAZD6-Xwu1fxWSIIhcmjufGQlIkxi_qu1uXlycWrzGQ'
 
+      // 뒤로가기
+      const back = document.getElementById('back')
+      back.addEventListener('click', (e)=>{
+          window.history.back()
+      })
+      
       const editButton = document.getElementById('edit');
       editButton.addEventListener('click', async (e)=>{
         event.preventDefault();

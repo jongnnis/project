@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mypage</title>
+    <link rel="stylesheet" href="../userFrame.css">
+    <link rel="stylesheet" href="./mypage_1.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4fb8cb184ff1bea2f0d7b39571d61716"></script>
+    <script src="./mypage_1.js"></script> 
+</head>
+<body>
+    <header class="purple">
+        <input class="search" type="text" maxlength="20" placeholder="장소,주소 검색">
+    </header>
+    <div class="container">
+        <div id="map">map</div>  
+        <div class="menu-container">
+            <i class="xi-maker-drop" onclick="goToDepSearch()">경로찾기</i>
+            <i class="xi-taxi">콜택시</i>
+            <i class="xi-browser-text">불편신고</i>
+            <i class="xi-profile-o" id="mypage">마이페이지</i>
+        </div>         
+    </div>
+    <footer ></footer>
+    <script>
+        const userInfo = localStorage.getItem('userInfo')
+        const token = JSON.parse(userInfo).value
+        if(!token){
+            alert('로그인 후 사용바랍니다')
+            window.location.href = './login.html'
+        }
+
+        const mypage = document.getElementById('mypage')
+        mypage.addEventListener('click',(e)=>{
+            window.location.href = './mypage.html'
+        })
+    </script>
+</body>
+</html>

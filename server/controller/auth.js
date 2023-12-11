@@ -48,7 +48,6 @@ export async function check(req, res, next){
 // 회원가입 /auth/signup
 export async function signup(req, res){
     const {userid, userpw, name, ssn1, ssn2, hp} = req.body
-    console.log(userid)
     const found = await authRepository.findByUserHp(hp)
     if (found){
         return res.status(409).json({message: `${hp}로 이미 가입된 아이디가 있습니다`})
@@ -91,7 +90,6 @@ export const upload = multer({ storage: storage });
 export async function login(req, res){
     const {userid, userpw} = req.body
     const user = await authRepository.findByUserid(userid)
-    console.log(req.body)
     if(!user){
         return res.status(401).json({message:'아이디 비밀번호가 틀렸습니다'})
     }
@@ -100,6 +98,7 @@ export async function login(req, res){
         return res.status(401).json({message: '아이디 비밀번호가 틀렸습니다'})
     }
     const token = createJwtToken(user.id)
+    console.log(token)
     res.status(200).json({token, message: '로그인 되었습니다'})
 }
 

@@ -8,15 +8,17 @@ userid.addEventListener('input',() => {
     document.getElementById('isUserid').value = 'n'
 })
 
-// 다시 login 페이지로 이동
-const loginBack = document.getElementById('back')
-loginBack.addEventListener('click', loginPage)
+const hp = document.getElementById('hp')
+hp.addEventListener('input',() => {
+    document.getElementById('check').value = 'n'
+})
 
-// 아이디 확인 후 로그인창으로 다시 이동
-function loginPage(){
-    console.log(2)
-    window.location.href = './login.html'
-}
+// 시작 페이지로 이동
+const back = document.getElementById('back')
+back.addEventListener('click', (e)=>{
+    window.location.href = './start.html'
+})
+
 
 // 아이디 중복 확인
 function useridCheck(){

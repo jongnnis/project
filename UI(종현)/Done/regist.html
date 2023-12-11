@@ -26,7 +26,7 @@
             <p>
                 <!-- onclick 추가 -->
                 <label for="userid" class="txt_input">아이디:</label><input class="search" id="userid"
-                    placeholder="아이디를 입력하세요" maxlength="15"><button class="btn_inside" onclick="useridCheck()"
+                    placeholder="아이디를 입력하세요" maxlength="15"><button type="button" class="btn_inside" onclick="useridCheck()"
                     id="id_check">중복확인</button>
             </p>
             <p>
@@ -77,13 +77,6 @@
             let value = event.target.value.toString();
             fileName.value = value.split("\\").reverse()[0]
         })
-
-        const back = document.getElementById('back')
-        back.addEventListener('click', function() {
-            console.log('ㅇㅇ')
-            e.preventDefault()
-            window.history.back();
-        });
     
     </script>
 </body>

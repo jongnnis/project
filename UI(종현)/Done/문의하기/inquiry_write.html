@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <i class="xi-angle-left"></i>
+        <i class="xi-angle-left" id="back"></i>
         <span class="title">문의하기</span>
     </header>
     <div class="container">
@@ -25,7 +25,7 @@
             </select>
         </p>
         <p>
-            <input class="search" type="text" maxlength="20" placeholder="제목" id="title">
+            <input class="search" type="text" maxlength="30" placeholder="제목" id="title">
             <input class="search bigsearch" type="text" placeholder="내용" id="text">
         </p>
         <button type="button" class="purple button" id="write">제출</button>
@@ -33,18 +33,18 @@
     <footer></footer>   
 
     <script>
-        const userInfo = localStorage.getItem('userinfo')
-        // 연결해서 한번 해보기
-        if(userInfo){
-            const userData = JSON.parse(userInfo)
-            console.log(userData)
-            token = userData.token;
-            // token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NmViOTBkYjE4OWQyOTBjNzAyYWNhNSIsImlhdCI6MTcwMTkyNDg4MywiZXhwIjoxNzAyMDk3NjgzfQ.xPN6jVCh3S3Em2-Rlh9nK_g1Raf-WZfqYQgPyYGdoZE'
-        }else{
-            // alert('로그인 후 사용 바랍니다')
+        const userInfo = localStorage.getItem('userInfo')
+        const token = JSON.parse(userInfo).value
+        if(!token){
+            alert('로그인 후 사용바랍니다')
+            window.location.href = '../login.html'
         }
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NmViOTBkYjE4OWQyOTBjNzAyYWNhNSIsImlhdCI6MTcwMTkyNTg1MCwiZXhwIjoxNzAyMDk4NjUwfQ.3hixf507pcOSWE6kB7QZMwvGu1Weqveya_c44pDNUq0'
 
+        // 뒤로가기
+        const back = document.getElementById('back')
+        back.addEventListener('click', (e)=>{
+            window.location.href = './my_inquiry.html'
+        })
 
         const write = document.getElementById('write')
         write.addEventListener('click',(e)=>{

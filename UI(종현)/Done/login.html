@@ -65,27 +65,27 @@
             })
             .then(res => {return res.json()})
             .then(data => {
-                if(data['message'] == ''){ // 뭐였더라 ㅋㅋ
-                    window.location.href = './index.html'; //지도 화면으로 가야함
+                if(data.message == '로그인 되었습니다'){ 
+                    setItemWithExpiry('userInfo', data.token, 30)
+                    alert(data.message)
+                    window.location.href = './mypage.html'; //지도 화면으로 가야함
+                }else {
+                    alert(data.message)
                 } 
-                localStorage.setItem('userInfo', JSON.stringify(data))
-                console.log(data)
+                
             })
         })
-
-        const regist = document.getElementById('regist')
-        regist.addEventListener('click', (e)=>{
-            // e.preventDefault() // 이거 넣어야지 페이지 이동댐
-
-            console.log('입력댐')
-
-            const url = './regist.html'
-            
-            window.location.href = url
-           
-        })
-
-    
+        
+        // 데이터를 저장할 때 만료 시간을 함께 저장하는 함수 (30일)
+        function setItemWithExpiry(key, value, expiryInDays ) {
+            const now = new Date();
+            const expiryTime = now.getTime() + (expiryInDays  * 24 * 60 * 60 * 1000);
+            const item = {
+                value: value,
+                expiry: expiryTime
+            };
+            localStorage.setItem(key, JSON.stringify(item));
+        }
 
     </script>
 </body>

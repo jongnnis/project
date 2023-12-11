@@ -14,11 +14,11 @@
         <h2 id="title" >PASS 본인확인</h2>
         <form action="#" id="form">      <!--정규 표현식, validate적용-->
             <p>이름</p>
-            <input type="text" class="search" id="name" placeholder="성명입력">
+            <input type="text" class="search" id="name" placeholder="성명입력" readonly>
             <p>주민등록번호</p>
-            <input type="text" class="search" id="ssn1" placeholder="••••••"> - <input type="text" class="search" id="ssn2" placeholder="•••••••">
+            <input type="text" class="search" id="ssn1" placeholder="••••••" readonly> - <input type="text" class="search" id="ssn2" placeholder="•••••••" readonly>
             <p>휴대폰번호</p> 
-            <input class="search" type="text" id="phone" placeholder="숫자만 입력">
+            <input class="search" type="text" id="phone" placeholder="숫자만 입력" readonly>
             <br>
             <button class="purple button" id="cancel">취소</button> <button class="purple button" type="button" id="check">확인</button>
         </form>
@@ -45,7 +45,7 @@
     </div>
     <script>
         window.onload = function(){
-            const storedData = localStorage.getItem('userInfo')
+            const storedData = localStorage.getItem('checkInfo')
             document.getElementById('name').value = JSON.parse(storedData).name
             document.getElementById('ssn1').value = JSON.parse(storedData).ssn1
             document.getElementById('ssn2').value = JSON.parse(storedData).ssn2

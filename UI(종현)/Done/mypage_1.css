@@ -1,0 +1,22 @@
+header {
+    margin-top: 0
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+}
+
+.menu-container {
+    background-color: #ffffff;
+    padding: 10px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around; /* 버튼들을 가로로 고르게 배치 */
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+}
+
+.container { width: 100%;}
+
+#mypage {cursor: pointer;}

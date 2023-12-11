@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <i class="xi-angle-left"></i>
+        <i class="xi-angle-left" id="back"></i>
         <span class="title">문의 내역</span>
     </header>
     <div class="container">
@@ -37,16 +37,18 @@
         const inquiry_id = localStorage.getItem('inquiry_id')
         console.log(inquiry_id)
 
-        const userInfo = localStorage.getItem('userinfo')
-        // 연결해서 한번 해보기
-        if(userInfo){
-            const userData = JSON.parse(userInfo)
-            console.log(userData)
-            token = userData.token;
-        }else{
-            // alert('로그인 후 사용 바랍니다')
+        const userInfo = localStorage.getItem('userInfo')
+        const token = JSON.parse(userInfo).value
+        if(!token){
+            alert('로그인 후 사용바랍니다')
+            window.location.href = '../login.html'
         }
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NmViOTBkYjE4OWQyOTBjNzAyYWNhNSIsImlhdCI6MTcwMTkyNTg1MCwiZXhwIjoxNzAyMDk4NjUwfQ.3hixf507pcOSWE6kB7QZMwvGu1Weqveya_c44pDNUq0'
+
+        // 뒤로가기
+        const back = document.getElementById('back')
+        back.addEventListener('click', (e)=>{
+            window.history.back()
+        })
 
         fetch(`http://localhost:8080/inquiry/myInquiry/${inquiry_id}`,{
             method:"GET",

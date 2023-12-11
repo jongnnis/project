@@ -16,11 +16,11 @@ export const isAuth = async(req, res, next)=>{
     jwt.verify(
         token, config.jwt.secretKey, async (error, decoded)=>{
             if (error){
-                return res.status(401).json(AUTH_ERROR)
+                return res.status(403).json(AUTH_ERROR)
             }
             const user = await authRepository.getById(decoded.id)
             if (!user){
-                return res.status(401).json(AUTH_ERROR)
+                return res.status(402).json(AUTH_ERROR)
             }
             req.userId = user.id
             next()
