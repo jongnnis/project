@@ -40,7 +40,7 @@ export async function findByUserHp(hp){
 // 회원 생성
 export async function createUser(user){
     return getUsers().insertOne(user)
-    // .then((result)=> result.insertedId.toString())
+    .then((result)=> result.insertedId.toString())
 }
 
 // _id로 회원정보 불러오기

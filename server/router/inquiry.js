@@ -1,11 +1,30 @@
 import express from 'express'
 import * as inquiryController from '../controller/inquiry.js'
+import {body} from 'express-validator'
+import {validate} from '../middleware/validator.js'
 import {isAuth} from '../middleware/auth.js';
 
 const router = express.Router()
 
+const validateInquiry = [
+    body('category')
+        .trim()
+        .notEmpty()
+        .withMessage('카테고리를 지정해주세요'),
+    body('title')
+        .trim()
+        .notEmpty()
+        .withMessage('제목을 입력하세요'),
+    body('text')
+        .trim()
+        .notEmpty()
+        .withMessage('내용이 반드시 입력되어야 합니다'),
+    validate
+]
+
+
 // 고객문의 글 생성
-router.post('/write', isAuth, inquiryController.createInquiry)
+router.post('/write', isAuth, validateInquiry, inquiryController.createInquiry)
 // 자신이 쓴 문의하기 글 보기
 router.get('/myInquiries', isAuth, inquiryController.getAllInquiry)
 // 특정 글만 가져오기 (_id이용)

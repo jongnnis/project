@@ -64,7 +64,8 @@ export async function signup(req, res){
         ssn1,
         ssn2,
         hp,
-        img: `../uploads/${filename}`
+        img: `../uploads/${filename}`,
+        ok:'미승인'
     })
     res.status(201).json({message:'가입되었습니다.', users})
 }

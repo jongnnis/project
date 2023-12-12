@@ -127,8 +127,6 @@ signUp.addEventListener('click', async (e)=>{
                 alert('회원가입 되었습니다.')
                 console.log(data);
                 window.location.href = './login.html';
-                // 회원가입이 성공했다면 다음 페이지로 이동
-                // window.location.href = '/next-page'; // 변경하고 싶은 URL로 수정
             } else {
                 const data = await response.json()
                 console.log(data)

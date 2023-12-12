@@ -15,7 +15,8 @@ export async function create(category, title, text, userId){
             title,
             text,
             userid: user.userid,
-            createdAt: new Date()
+            createdAt: new Date(),
+            answer: ''
         })
     )
     .then((result)=> getById(result.insertedId))
