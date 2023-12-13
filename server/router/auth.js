@@ -71,4 +71,14 @@ router.put('/modify', isAuth, authController.modify)
 router.put('/newPW_id', isAuth, authController.newPW_id)
 
 
+// ----------------------------------------------------------
+// 관리자 페이지
+
+// 가입된 정보 확인
+router.get('/members',authController.getAllUsers)
+// 등록증 승인
+router.put('/identifyOk/:id', isAuth, authController.updateOkFieldById);
+// 등록증 거부
+router.put('/refuse/:id', isAuth, authController.updateOkFieldById_Refuse);
+
 export default router

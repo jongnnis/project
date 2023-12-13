@@ -42,7 +42,7 @@ export async function getAll(){
 export async function checkOk(id){
     return getReports().findOneAndUpdate(
         {_id: new ObjectID(id)},
-        {$set: {check: 'ok'}},
+        {$set: {check: '✅'}},
         {returnDocument: "after"}
     )
 } 

@@ -21,10 +21,15 @@ const validateReport = [
 // 불편신고 글 생성
 router.post('/write', isAuth, reportController.upload.single('file'), validateReport, reportController.createreport)
 
+// 관리자 페이지----------------------------------------------
+
 // 불편신고 데이터 불러오기 (관리자 페이지)
-router.get('/all', reportController.ViewReport )   // isAuth,
+router.get('/all', isAuth, reportController.ViewReport )
+
+// 불편신고 데이터 하나 선택해서 불러오기 (관리자 페이지)
+router.get('/:id', isAuth, reportController.getReportById);
 
 // 불편신고 데이터 신고완료
-router.put('/check/:id',reportController.DoneReport)
+router.put('/check/:id', isAuth, reportController.DoneReport)
 
 export default router

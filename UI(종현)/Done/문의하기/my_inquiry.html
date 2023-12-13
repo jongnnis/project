@@ -15,8 +15,7 @@
         <span class="title">문의 내역</span>
     </header>
     <div class="container">
-        <div id="inquiries">
-        </div>
+        <div id="inquiries"></div>
         <button type="button" class="purple button" onclick="writeInquiry()">문의하기</button>
     </div>
     <footer></footer>
@@ -35,6 +34,7 @@
             window.location.href = '../mypage_1.html'
         })
         
+        // 나의 문의하기 데이터 불러오기
         fetch("http://localhost:8080/inquiry/myInquiries",{
             method:"GET",
             headers: {

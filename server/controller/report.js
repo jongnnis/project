@@ -34,6 +34,18 @@ export async function ViewReport(req, res){
     res.status(200).json(reports)
 }
 
+// 불편신고 글 하나만 가져오기   /:id
+export async function getReportById(req, res) {
+  const id = req.params.id;
+  try {
+      const inquiry = await reportRepository.getById(id);
+      res.status(200).json(inquiry);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
 // 불편신고 완료   /report/check
 export async function DoneReport(req, res){
     // 신고 완료한 불편신고 데이터 id 

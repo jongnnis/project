@@ -12,20 +12,63 @@
 </head>
 <body class="purple">
     <header>
-        <i class="xi-angle-left"></i>
+        <i class="xi-angle-left" id="back"></i>
         <span class="title">고객센터</span>
     </header>
     <div class="container">
         <p>이동의 꿈입니다.<br>무엇을 도와드릴까요?</p>
         <input class="search" type="text" maxlength="20" placeholder="궁금한 내용의 키워드를 검색하세요.">
         <p>자주묻는 질문</p>
-        <li><span class="goldfont">Q</span>&nbsp&nbsp<span>장애인 등록증 첨부가 되지 않아요.</span></li>
-        <li><span class="goldfont">Q</span>&nbsp&nbsp<span>비밀번호를 잊어버렷을 때는 어떻게 하나요?</span></li>
-        <li><span class="goldfont">Q</span>&nbsp&nbsp<span>경로찾기에서 오류가 있어요.</span></li>
-        <li><span class="goldfont">Q</span>&nbsp&nbsp<span>마이페이지에 접속이 안되요.</span></li>
+        <div id="questions"></div>
         
         <button type="button" class="gold button">고객센터 전화연결</button>
     </div>
     <footer></footer>
+    <input type="hidden" id="id" value="65794175be06f419797cc4ad">
+    <script>
+        // 뒤로가기
+        const back = document.getElementById('back')
+        back.addEventListener('click', (e)=>{
+            window.location.href = '../mypage_1.html'
+        })
+
+        // 데이터 불러오기
+        const id = document.getElementById('id').value
+
+        fetch("http://localhost:8080/inquiry/questions",{
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: id}), 
+        })
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data)
+            const questions = document.getElementById('questions')
+
+            if(data){
+                data.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="goldfont">Q</span>&nbsp&nbsp<span>${item.title}</span>`
+                    li.setAttribute('data-id', item.id)
+                    li.addEventListener('click', handleClick)
+                    questions.insertBefore(document.createTextNode(' '), questions.firstChild);
+                    questions.insertBefore(li,questions.firstChild);
+                });
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        })
+
+        // li 클릭이벤트 핸들러
+        function handleClick(event){
+            const clickedNodeId= event.currentTarget.getAttribute('data-id')
+            console.log(clickedNodeId)
+            localStorage.setItem('question_id', clickedNodeId)
+            window.location.href = './detail_question.html'
+        }
+    </script>
 </body>
 </html>

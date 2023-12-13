@@ -65,7 +65,7 @@ export async function signup(req, res){
         ssn2,
         hp,
         img: `../uploads/${filename}`,
-        ok:'미승인'
+        identify : "no"
     })
     res.status(201).json({message:'가입되었습니다.', users})
 }
@@ -195,4 +195,46 @@ export async function modify(req,res){
     }
     const update = await authRepository.updateUserInfo(req.userId, name, hp)
     res.status(200).json({message: '회원정보가 수정되었습니다', update})
+}
+
+// -----------------------------------------------
+// 관리자 페이지
+
+// 모든 유저 정보 가져오기
+export async function getAllUsers(req, res) {
+    try {
+        const data = await authRepository.allUsers();
+        res.status(200).json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+// 등록증 승인
+export async function updateOkFieldById(req, res) {
+    const { id } = req.params;
+    const identify = "ok";
+    
+    const update = await authRepository.updateOkFieldById(id, identify);
+
+    if (!update) {
+        return res.status(404).json({ message: `User with ID ${id} not found` });
+    }
+
+    res.status(200).json({ message: `ok 값이 수정되었습니다.`, update });
+}
+
+// 등록증 거부
+export async function updateOkFieldById_Refuse(req, res) {
+    const { id } = req.params;
+    const identify = "refuse";
+    
+    const update = await authRepository.updateOkFieldById(id, identify);
+
+    if (!update) {
+        return res.status(404).json({ message: `User with ID ${id} not found` });
+    }
+
+    res.status(200).json({ message: `ok 값이 수정되었습니다.`, update });
 }
