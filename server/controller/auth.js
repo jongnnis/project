@@ -4,6 +4,8 @@ import {config} from '../config.js'
 import jwt from 'jsonwebtoken'
 import multer from 'multer'      // 파일업로드 할때 사용
 import path from 'path'
+import fs from 'fs/promises'
+import { fileURLToPath } from 'url'
 
 // 토큰 생성
 function createJwtToken(id){
@@ -83,7 +85,16 @@ const storage = multer.diskStorage({
     },
   });
 // 미들웨어 설정
-export const upload = multer({ storage: storage });
+export const upload = multer({ 
+    storage: storage,
+    fileFilter: function (req, file, cb){
+        if(file.mimetype.startsWith('image/')){
+            cb(null, true)
+        }else{
+        cb(new Error('이미지 파일만 허용됩니다.'))
+        }
+    }
+});
 
 // ------------------------------------------------
 
@@ -237,4 +248,29 @@ export async function updateOkFieldById_Refuse(req, res) {
     }
 
     res.status(200).json({ message: `ok 값이 수정되었습니다.`, update });
+}
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// readFile   /auth/getImage
+export async function readFile(req, res){
+    const filename = req.body.filename
+    console.log('Requested File Path:', filename);
+    try {
+        const fullPath = path.join(__dirname, '..', 'uploads', filename);
+        console.log('Full File Path:', fullPath);
+    
+        // 파일 존재 여부 확인
+        await fs.access(fullPath, fs.constants.F_OK);
+    
+        // 파일을 클라이언트에게 전송
+        res.sendFile(fullPath, (err) => {
+          if (err) {
+            res.status(404).send('이미지를 찾을 수 없습니다.');
+          }
+        });
+      } catch (error) {
+        res.status(404).send('요청한 파일이 서버에 존재하지 않습니다.');
+      }
 }

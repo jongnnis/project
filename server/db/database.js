@@ -19,7 +19,3 @@ export function getInquiries(){
 export function getReports(){
     return db.collection('reports')
 }
-
-export function getCustomers(){
-    return db.collection('customer_centers')
-}

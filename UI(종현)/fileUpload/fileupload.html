@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>file upload test</title>
+</head>
+<body>
+    <input type="text" id="filename" value="1702480098456.jpg">
+    <button type="button" id="post">사진 볼까</button>
+
+    <script>
+        const filename = document.getElementById('filename').value
+        const post = document.getElementById('post')
+        post.addEventListener('click', (e)=>{
+            fetch('http://localhost:8080/auth/getImage',{
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ filename }),
+                })
+                .then(res => res.blob())
+                .then(blob => {
+                    const img = document.createElement('img')
+                    img.src = URL.createObjectURL(blob)
+                    document.body.appendChild(img);
+                })
+                .catch(error => console.error('Error:', error));
+        })
+    </script>
+</body>
+</html>

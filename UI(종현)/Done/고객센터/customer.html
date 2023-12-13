@@ -17,11 +17,11 @@
     </header>
     <div class="container">
         <p>이동의 꿈입니다.<br>무엇을 도와드릴까요?</p>
-        <input class="search" type="text" maxlength="20" placeholder="궁금한 내용의 키워드를 검색하세요.">
+        <!-- <input class="search" type="text" maxlength="20" placeholder="궁금한 내용의 키워드를 검색하세요."> -->
         <p>자주묻는 질문</p>
         <div id="questions"></div>
         
-        <button type="button" class="gold button">고객센터 전화연결</button>
+        <button type="button" class="gold button" onclick="callCustomerCenter()">고객센터 전화연결</button>
     </div>
     <footer></footer>
     <input type="hidden" id="id" value="65794175be06f419797cc4ad">
@@ -69,6 +69,14 @@
             localStorage.setItem('question_id', clickedNodeId)
             window.location.href = './detail_question.html'
         }
+
+        // 고객센터 전화걸기
+        function callCustomerCenter() {
+        const phoneNumber = '010-2716-3951';  
+
+        // tel 링크를 사용하여 전화 걸기
+        window.location.href = `tel:${phoneNumber}`;
+    }
     </script>
 </body>
 </html>

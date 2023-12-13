@@ -26,11 +26,17 @@
     <footer ></footer>
     <script>
         const userInfo = localStorage.getItem('userInfo')
-        const token = JSON.parse(userInfo).value
-        if(!token){
+        if (!userInfo){
             alert('로그인 후 사용바랍니다')
             window.location.href = './login.html'
+        }else{
+            const token = JSON.parse(userInfo).value
+            if(!token){
+                alert('로그인 후 사용바랍니다')
+                window.location.href = './login.html'
+            }
         }
+        
         // 불편신고 이동
         const report = document.getElementById('report')
         report.addEventListener('click',(e)=>{

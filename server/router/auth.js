@@ -80,5 +80,7 @@ router.get('/members',authController.getAllUsers)
 router.put('/identifyOk/:id', isAuth, authController.updateOkFieldById);
 // 등록증 거부
 router.put('/refuse/:id', isAuth, authController.updateOkFieldById_Refuse);
+// 등록증 파일 보내기
+router.post('/getImage', authController.readFile)
 
 export default router
