@@ -33,6 +33,11 @@
     border-bottom: 1px solid #ddd;
 }
 
+#i_answer > div {
+    height: 150px;
+    overflow: scroll
+}
+
 #i_answer {
     font-size: 1rem;
     border-radius: 0 0 15px 15px;

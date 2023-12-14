@@ -127,7 +127,7 @@ function backPage(){
 // 아이디 확인 후 로그인창으로 다시 이동
 function loginPage(){
     console.log(2)
-    window.location.href = './login.html'
+    window.location.href = '../login.html'
 }
 
 // 제대로 입력하도록 정규표현식

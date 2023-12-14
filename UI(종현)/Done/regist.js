@@ -10,7 +10,7 @@ userid.addEventListener('input',() => {
 
 const hp = document.getElementById('hp')
 hp.addEventListener('input',() => {
-    document.getElementById('check').value = 'n'
+    localStorage.setItem("check",'')
 })
 
 // 시작 페이지로 이동
@@ -122,6 +122,7 @@ signUp.addEventListener('click', async (e)=>{
                 method:'POST',
                 body: formData
             })
+            console.log(response)
             if (response.ok) {
                 const data = await response.json();
                 alert('회원가입 되었습니다.')
