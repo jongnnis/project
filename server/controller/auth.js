@@ -66,7 +66,7 @@ export async function signup(req, res){
         ssn1,
         ssn2,
         hp,
-        img: `../uploads/${filename}`,
+        img: `${filename}`,
         identify : "no"
     })
     res.status(201).json({message:'가입되었습니다.', users})
@@ -250,12 +250,82 @@ export async function updateOkFieldById_Refuse(req, res) {
     res.status(200).json({ message: `ok 값이 수정되었습니다.`, update });
 }
 
+// 관리자 로그인   /auth/adminlogin
+
+export async function login_Admin(req, res) {
+    const { userid, userpw } = req.body;
+    const user = await authRepository.findByUserid(userid);
+
+    if (!user || user.identify !== "admin") {
+        return res.status(401).json({ message: '관리자가 아닙니다.' });
+    }
+
+    const isValidpassword = bcrypt.compareSync(userpw, user.userpw);
+    if (!isValidpassword) {
+        return res.status(401).json({ message: '아이디 비밀번호가 틀렸습니다' });
+    }
+
+    const token = createJwtToken(user.id);
+    console.log(token);
+    res.status(200).json({ token, message: '관리자 로그인 되었습니다' });
+}
+
+// 관리자 부여
+export async function updateOkFieldById_Administrator(req, res) {
+    const { id } = req.params;
+    const identify = "admin";
+    
+    const update = await authRepository.updateOkFieldById(id, identify);
+
+    if (!update) {
+        return res.status(404).json({ message: `User with ID ${id} not found` });
+    }
+
+    res.status(200).json({ message: `당신은 이제 관리자입니다`, update });
+}
+
+//  회원 정보 하나 가져오기
+export async function getOneUser(req, res) {
+    const id = req.params.id;
+    try {
+        const inquiry = await authRepository.getById(id);
+        res.status(200).json(inquiry);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+// 관리자용 유저 정보 수정
+export async function user_modify(req, res) {
+    const { name,hp } = req.body;
+    try {
+        const user = await authRepository.findByUserHp(hp);
+        if (!user) {
+            return res.status(404).json({ message: `전화번호 ${hp}에 해당하는 회원을 찾을 수 없습니다.` });
+        }
+
+        const update = await authRepository.updateUserInfo(user.userid, name, hp);
+        return res.status(200).json({ message: '회원정보가 수정되었습니다', update });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+// 파일
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // readFile   /auth/getImage
 export async function readFile(req, res){
-    const filename = req.body.filename
+    const id = req.params.id;
+    const user = await authRepository.getById(id);
+    if(!user){
+        res.status(401).json({message:'유저정보를 불러오지 못함'})
+    }
+    const filename = user.img
     console.log('Requested File Path:', filename);
     try {
         const fullPath = path.join(__dirname, '..', 'uploads', filename);

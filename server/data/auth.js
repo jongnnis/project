@@ -101,3 +101,8 @@ export async function updateOkFieldById(id, identify) {
         { returnDocument: "after" }
     );
 }
+
+// 회원정보 삭제
+export async function remove(id) {
+    return getUsers().deleteOne({ _id: new ObjectID(id) });
+}

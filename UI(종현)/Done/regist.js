@@ -131,7 +131,7 @@ signUp.addEventListener('click', async (e)=>{
                 const data = await response.json()
                 console.log(data)
                 console.error('회원가입 실패');
-                alert('회원가입에 실패하였습니다.')
+                alert(data.message)
             }
         } catch (error) {
             console.error('에러 발생', error);
